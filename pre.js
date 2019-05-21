@@ -76,7 +76,7 @@ function display(jsonData) {
             displayCategory = _ref2$state.displayCategory;
         return React.createElement("div", null, products.filter(function (_ref3) {
             var category = _ref3.eventtypes;
-            return displayCategory === category || displayCategory === "all";
+            return displayCategory === category || displayCategory === "All";
         }).map(function (_ref4) {
             var category = _ref4.category,
                 name = _ref4.rawtitle;
@@ -116,7 +116,7 @@ function display(jsonData) {
             var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
             _this.state = {
-                displayCategory: "all",
+                displayCategory: "All",
                 products: props.products,
                 productCategories: props.productCategories
             };
@@ -154,7 +154,7 @@ function display(jsonData) {
         return prod.eventtypes;
     }).filter(uniqueItems);
 
-    PRODUCT_CATEGORIES.push("all");
+    PRODUCT_CATEGORIES.push("All");
     PRODUCT_CATEGORIES.sort();
 
     ReactDOM.render(React.createElement(Main, { products: PRODUCTS, productCategories: PRODUCT_CATEGORIES }), document.getElementById("test2"));
