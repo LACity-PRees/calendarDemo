@@ -30,7 +30,7 @@ function draw(element, id) {
     ReactDOM.render(element, id);
 }
 
-$.getJSON('http://calendar2.cityofla.acsitefactory.com/rest/views/calendar_rest_dynamic?display_id=services_1&display_id=services_1&filters[eventtype]=421,596,686,281,286,291,296,711,781,306,396,736,341,406,411,356&filters[department]=&filters[tags]=&filters[start][value][date]=2017-11-01&filters[end][value][date]=2017-11-07&filters[featured]=Yes', function req(json) {
+$.getJSON('https://calendar2.cityofla.acsitefactory.com/rest/views/calendar_rest_dynamic?display_id=services_1&display_id=services_1&filters[eventtype]=421,596,686,281,286,291,296,711,781,306,396,736,341,406,411,356&filters[department]=&filters[tags]=&filters[start][value][date]=2017-11-01&filters[end][value][date]=2017-11-07&filters[featured]=Yes', function req(json) {
     display(json);
 });
 
