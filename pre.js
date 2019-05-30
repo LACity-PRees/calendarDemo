@@ -1,161 +1,144 @@
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-//divs
-var div1 = document.getElementById('test');
-var div2 = document.getElementById('test2');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function time() {
-    var element = React.createElement(
-        'div',
-        null,
-        React.createElement(
-            'h1',
-            null,
-            'Hello!'
-        ),
-        React.createElement(
-            'p',
-            null,
-            'It is ',
-            new Date().toLocaleTimeString()
-        )
-    );
-    draw(element, div1);
-}
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-setInterval(time, 1000);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-//create the element
-function draw(element, id) {
-    ReactDOM.render(element, id);
-}
+var today = new Date();
+var next = new Date();
+next.setDate(next.getDate() + 7);
 
-$.getJSON('https://calendar.lacity.org/rest/views/calendar_rest_dynamic?display_id=services_1&display_id=services_1&filters[eventtype]=421,596,686,281,286,291,296,711,781,306,396,736,341,406,411,356&filters[department]=&filters[tags]=&filters[start][value][date]=2017-11-01&filters[end][value][date]=2017-11-07&filters[featured]=Yes', function req(json) {
-    display(json);
+var todayDate = today.getDate();
+var todayMonth = today.getMonth() + 1;
+var todayYear = today.getFullYear();
+
+//console.log('today', todayYear + '-' + todayMonth + '-' + todayDate );
+
+var nextDate = next.getDate();
+var nextMonth = next.getMonth() + 1;
+var nextYear = next.getFullYear();
+
+//console.log('next', nextYear + '-' + nextMonth + '-' + nextDate );
+
+var url = 'https://calendar.lacity.org/rest/views/calendar_rest_dynamic?display_id=services_1&display_id=services_1&filters[eventtype]=421,596,686,281,286,291,296,711,781,306,396,736,341,406,411,356&filters[department]=&filters[tags]=&filters[start][value][date]=';
+
+url += todayYear + '-' + todayMonth + '-' + todayDate;
+
+url += '&filters[end][value][date]=';
+
+url += nextYear + '-' + nextMonth + '-' + nextDate;
+
+//console.log(url);
+
+
+$.getJSON(url, function req(json) {
+  display(json);
 });
 
-function display(jsonData) {
-    console.log(jsonData);
-    var _createClass = function () {
-        function defineProperties(target, props) {
-            for (var i = 0; i < props.length; i++) {
-                var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-            }
-        }return function (Constructor, protoProps, staticProps) {
-            if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+var PRODUCTS = [{ category: "entertainment, sports", name: "Football" }, { category: "entertainment, sports", name: "Baseball" }, { category: "entertainment, sports", name: "Basketball" }, { category: "apple, entertainment, fashion, music", name: "iPod Touch" }, { category: "apple, design, phone", name: "iPhone 5" }, { category: "design", name: "Nexus 7" }, { category: "leisure", name: "Holiday" }];
+//console.log(PRODUCTS);
+// get unique category items
+
+var types = [{ category: "All" }, { category: "Arts" }, { category: "Business" }, { category: "City Government" }, { category: "Culture" }, { category: "Environment" }, { category: "Fairs" }, { category: "Family" }, { category: "General" }, { category: "Holiday" }, { category: "Parks" }, { category: "Shows" }, { category: "Tours" }, { category: "Training" }];
+
+function filter(data, filterKeys) {
+  var arr = [];
+
+  if (filterKeys === "All") {
+    for (i = 0; i < data.length; i++) {
+      var current = data[i];
+      arr.push(current);
+    }
+  } else {
+    for (i = 0; i < data.length; i++) {
+      var current = data[i];
+      if (current.eventtypes.indexOf(filterKeys) >= 0) {
+        arr.push(current);
+      }
+    }
+  }
+  if (arr.length === 0) {
+    arr.push({ rawtitle: "No events to display for this category." });
+  }
+  return arr;
+}
+
+function display(json) {
+  //console.log(json);
+  var arrButtons = [];
+  var buttonStyle = {
+    margin: '10px 10px 10px 0'
+  };
+
+  var ButtonClicks = function (_React$Component) {
+    _inherits(ButtonClicks, _React$Component);
+
+    function ButtonClicks(props) {
+      _classCallCheck(this, ButtonClicks);
+
+      var _this = _possibleConstructorReturn(this, (ButtonClicks.__proto__ || Object.getPrototypeOf(ButtonClicks)).call(this, props));
+
+      _this.onClick = _this.onClick.bind(_this);
+      return _this;
+    }
+
+    _createClass(ButtonClicks, [{
+      key: 'onClick',
+      value: function onClick(i) {
+        console.log(i);
+        var data = filter(json, i);
+        var arr = [];
+        for (j = 0; j < data.length; j++) {
+          arr.push(React.createElement(
+            'p',
+            { key: data[j].rawtitle + j },
+            data[j].rawtitle,
+            ' '
+          ));
+        }
+        draw(React.createElement(
+          'div',
+          null,
+          arr
+        ), results);
+        //console.log(filter(PRODUCTS, i));
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var _this2 = this;
+
+        var _loop = function _loop(_i) {
+          arrButtons.push(React.createElement(
+            'button',
+            { style: buttonStyle, key: types[_i].category, id: types[_i].category, onClick: function onClick() {
+                return _this2.onClick(types[_i].category);
+              } },
+            types[_i].category
+          ));
         };
-    }();
 
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
+        for (var _i = 0; _i < types.length; _i++) {
+          _loop(_i);
         }
-    }
+        return React.createElement(
+          'div',
+          null,
+          arrButtons
+        );
+      }
+    }]);
 
-    function _possibleConstructorReturn(self, call) {
-        if (!self) {
-            throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof(call)) === "object" || typeof call === "function") ? call : self;
-    }
+    return ButtonClicks;
+  }(React.Component);
 
-    function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-            throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof(superClass)));
-        }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-    }
+  var buttonDiv = document.getElementById("test");
+  var results = document.getElementById("test2");
+  draw(React.createElement(ButtonClicks, null), buttonDiv);
 
-    var ProductItem = function ProductItem(_ref) {
-        var category = _ref.category,
-            name = _ref.name;
-        return React.createElement("div", { className: "category__list-item box flex-spread" }, name, React.createElement("div", { className: "category--" + category + " circle" }));
-    };
-
-    var ProductItems = function ProductItems(_ref2) {
-        var _ref2$state = _ref2.state,
-            products = _ref2$state.products,
-            displayCategory = _ref2$state.displayCategory;
-        return React.createElement("div", null, products.filter(function (_ref3) {
-            var category = _ref3.eventtypes;
-            return displayCategory === category || displayCategory === "All";
-        }).map(function (_ref4) {
-            var category = _ref4.category,
-                name = _ref4.rawtitle;
-            return React.createElement(ProductItem, {
-                key: "Event-" + name,
-                category: category,
-                name: name
-            });
-        }));
-    };
-
-    var ButtonCategories = function ButtonCategories(productCategories, setCategory) {
-        return productCategories.map(function (category) {
-            return React.createElement("button", {
-                key: category,
-                className: "btn-" + category,
-                onClick: function onClick() {
-                    return setCategory(category);
-                }
-            }, category);
-        });
-    };
-
-    var UI = function UI(_ref5) {
-        var state = _ref5.state,
-            productCategories = _ref5.state.productCategories,
-            setCategory = _ref5.setCategory;
-        return React.createElement("div", { className: "box flex-row" }, React.createElement("div", { className: "box flex-col" }, React.createElement("h3", null, "Filter by Category"), ButtonCategories(productCategories, setCategory)), React.createElement("div", { className: "box flex-col" }, React.createElement("h3", null, "Results"), React.createElement(ProductItems, { state: state })));
-    };
-
-    var Main = function (_React$Component) {
-        _inherits(Main, _React$Component);
-
-        function Main(props) {
-            _classCallCheck(this, Main);
-
-            var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
-
-            _this.state = {
-                displayCategory: "All",
-                products: props.products,
-                productCategories: props.productCategories
-            };
-            _this.setCategory = _this.setCategory.bind(_this);
-            return _this;
-        }
-
-        _createClass(Main, [{
-            key: "setCategory",
-            value: function setCategory(category) {
-                this.setState({
-                    displayCategory: category
-                });
-            }
-        }, {
-            key: "render",
-            value: function render() {
-                return React.createElement(UI, { setCategory: this.setCategory, state: this.state });
-            }
-        }]);
-
-        return Main;
-    }(React.Component);
-
-    // data
-
-
-    var PRODUCTS = jsonData;
-
-    // get unique category items
-    var uniqueItems = function uniqueItems(x, i, array) {
-        return array.indexOf(x) === i;
-    };
-    var PRODUCT_CATEGORIES = PRODUCTS.map(function (prod) {
-        return prod.eventtypes;
-    }).filter(uniqueItems);
-
-    PRODUCT_CATEGORIES.push("All");
-    PRODUCT_CATEGORIES.sort();
-
-    ReactDOM.render(React.createElement(Main, { products: PRODUCTS, productCategories: PRODUCT_CATEGORIES }), document.getElementById("test2"));
+  function draw(element, id) {
+    ReactDOM.render(element, id);
+  }
 }
