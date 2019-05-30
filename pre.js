@@ -34,7 +34,7 @@ url += nextYear + '-' + nextMonth + '-' + nextDate;
 
 
 $.getJSON(url, function req(json) {
-  display(json);
+  display(json.reverse());
 });
 
 var PRODUCTS = [{ category: "entertainment, sports", name: "Football" }, { category: "entertainment, sports", name: "Baseball" }, { category: "entertainment, sports", name: "Basketball" }, { category: "apple, entertainment, fashion, music", name: "iPod Touch" }, { category: "apple, design, phone", name: "iPhone 5" }, { category: "design", name: "Nexus 7" }, { category: "leisure", name: "Holiday" }];
