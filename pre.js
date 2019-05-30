@@ -94,6 +94,8 @@ function display(json) {
           arr.push(React.createElement(
             'p',
             { key: data[j].rawtitle + j },
+            data[j]["event-date"],
+            ' - ',
             data[j].rawtitle,
             ' '
           ));
