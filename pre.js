@@ -87,7 +87,7 @@ function display(json) {
     _createClass(ButtonClicks, [{
       key: 'onClick',
       value: function onClick(i) {
-        console.log(i);
+        //console.log(i);
         var data = filter(json, i);
         var arr = [];
         for (j = 0; j < data.length; j++) {
