@@ -37,9 +37,6 @@ $.getJSON(url, function req(json) {
   display(json.reverse());
 });
 
-var PRODUCTS = [{ category: "entertainment, sports", name: "Football" }, { category: "entertainment, sports", name: "Baseball" }, { category: "entertainment, sports", name: "Basketball" }, { category: "apple, entertainment, fashion, music", name: "iPod Touch" }, { category: "apple, design, phone", name: "iPhone 5" }, { category: "design", name: "Nexus 7" }, { category: "leisure", name: "Holiday" }];
-//console.log(PRODUCTS);
-// get unique category items
 
 var types = [{ category: "All" }, { category: "Arts" }, { category: "Business" }, { category: "City Government" }, { category: "Culture" }, { category: "Environment" }, { category: "Fairs" }, { category: "Family" }, { category: "General" }, { category: "Holiday" }, { category: "Parks" }, { category: "Shows" }, { category: "Tours" }, { category: "Training" }];
 
@@ -140,8 +137,10 @@ function display(json) {
   var results = document.getElementById("test2");
   draw(React.createElement(ButtonClicks, null), buttonDiv);
 
+  document.getElementById("All").click();
 
   showPage();
+
 }
 
 function draw(element, id) {
