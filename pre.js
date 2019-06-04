@@ -8,7 +8,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var today = new Date();
 var next = new Date();
-next.setDate(next.getDate() + 7);
+next.setDate(next.getDate() + 3);
 
 var todayDate = today.getDate();
 var todayMonth = today.getMonth() + 1;
@@ -140,7 +140,21 @@ function display(json) {
   var results = document.getElementById("test2");
   draw(React.createElement(ButtonClicks, null), buttonDiv);
 
-  function draw(element, id) {
-    ReactDOM.render(element, id);
-  }
+
+  showPage();
+}
+
+function draw(element, id) {
+  ReactDOM.render(element, id);
+}
+
+
+function showPage() {
+	document.getElementById("loader").style.display = "none";
+	document.getElementById("content").style.display = "block";
+}
+
+function showLoader() {
+	document.getElementById("loader").style.display = "block";
+	document.getElementById("content").style.display = "none";
 }
