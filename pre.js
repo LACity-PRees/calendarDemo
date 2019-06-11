@@ -15,7 +15,7 @@ $.getJSON(url, function req(json) {
 });
 
 
-var types = [{ category: "All" }, { category: "Arts" }, { category: "Business" }, { category: "City Government" }, { category: "Culture" }, { category: "Environment" }, { category: "Fairs" }, { category: "Family" }, { category: "General" }, { category: "Holiday" }, { category: "Parks" }, { category: "Shows" }, { category: "Tours" }, { category: "Training" }];
+var types = [{ category: "All" }, { category: "Free" }, { category: "Arts" }, { category: "Business" }, { category: "City Government" }, { category: "Culture" }, { category: "Environment" }, { category: "Fairs" }, { category: "Family" }, { category: "General" }, { category: "Holiday" }, { category: "Parks" }, { category: "Shows" }, { category: "Tours" }, { category: "Training" }];
 
 function filter(data, filterKeys) {
   var arr = [];
@@ -27,7 +27,16 @@ function filter(data, filterKeys) {
       arr.push(current);
     }
   }
-   else {
+  else if(filterKeys === "Free"){
+    for (i = 0; i < data.length; i++) {
+      var current = data[i];
+     
+      if (current.gsx$eventfee.$t === "No") {
+        arr.push(current);
+      }
+    }
+  }
+  else {
     for (i = 0; i < data.length; i++) {
       var current = data[i];
       if (current.gsx$eventtypes.$t.indexOf(filterKeys) >= 0) {
