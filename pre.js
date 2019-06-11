@@ -72,23 +72,24 @@ function display(json) {
       value: function onClick(i) {
         var data = filter(json, i);
         var arr = [];
-        if(data.length > 0){
+        if(data.length > 0){console.log(data[0]);
           for (j = 0; j < data.length; j++) {
-          arr.push(React.createElement(
-            'p',
-            { key: data[j].gsx$rawtitle.$t + j },
-            data[j]["gsx$event-date"].$t,
-            ' - ',
-            he.decode(data[j].gsx$rawtitle.$t),
-            ' '
-          ));
+            arr.push(React.createElement('div', {key: data[j].gsx$rawtitle.$t + j,className: 'box'},
+              React.createElement('div', {className: 'date'}, data[j]["gsx$event-date"].$t),
+              React.createElement('div', {className: 'time'}, data[j].gsx$eventtime.$t),
+              React.createElement('div', {className: 'title'}, he.decode(data[j].gsx$rawtitle.$t)),
+              React.createElement('div', {className: 'address'}, data[j].gsx$street.$t),
+              React.createElement('div', {className: 'cityZip'}, data[j].gsx$city.$t + ' ' +  data[j].gsx$zipcode.$t), 
+              React.createElement('br'),
+              React.createElement('a', {className: 'calLink', href: data[j].gsx$url.$t}, 'Link')
+            ));
+            }
+            draw(React.createElement(
+              'div',
+              null,
+              arr
+            ), results);
           }
-          draw(React.createElement(
-            'div',
-            null,
-            arr
-          ), results);
-        }
         else{
             arr.push(React.createElement(
               'p',
@@ -99,7 +100,7 @@ function display(json) {
             }
             draw(React.createElement(
               'div',
-              null,
+              {className: "flex-container"},
               arr
             ), results);
         }
