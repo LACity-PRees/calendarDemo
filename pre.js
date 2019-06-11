@@ -6,35 +6,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var today = new Date();
-var next = new Date();
-next.setDate(next.getDate() + 3);
 
-var todayDate = today.getDate();
-var todayMonth = today.getMonth() + 1;
-var todayYear = today.getFullYear();
-
-//console.log('today', todayYear + '-' + todayMonth + '-' + todayDate );
-
-var nextDate = next.getDate();
-var nextMonth = next.getMonth() + 1;
-var nextYear = next.getFullYear();
-
-//console.log('next', nextYear + '-' + nextMonth + '-' + nextDate );
-
-var url = 'https://calendar.lacity.org/rest/views/calendar_rest_dynamic?display_id=services_1&display_id=services_1&filters[eventtype]=421,596,686,281,286,291,296,711,781,306,396,736,341,406,411,356&filters[department]=&filters[tags]=&filters[start][value][date]=';
-
-url += todayYear + '-' + todayMonth + '-' + todayDate;
-
-url += '&filters[end][value][date]=';
-
-url += nextYear + '-' + nextMonth + '-' + nextDate;
-
-//console.log(url);
+var url="https://spreadsheets.google.com/feeds/list/1lz79dMIx0s5ItD0ooRqHsncQcxcwsS7YQQ5Xk1iNzSk/od6/public/values?alt=json";
 
 
 $.getJSON(url, function req(json) {
-  display(json.reverse());
+  display(json.feed.entry.reverse());
 });
 
 
@@ -46,24 +23,24 @@ function filter(data, filterKeys) {
   if (filterKeys === "All") {
     for (i = 0; i < data.length; i++) {
       var current = data[i];
+      //console.log(current);
       arr.push(current);
     }
-  } else {
+  }
+   else {
     for (i = 0; i < data.length; i++) {
       var current = data[i];
-      if (current.eventtypes.indexOf(filterKeys) >= 0) {
+      if (current.gsx$eventtypes.$t.indexOf(filterKeys) >= 0) {
         arr.push(current);
       }
     }
+    
   }
-  if (arr.length === 0) {
-    arr.push({ rawtitle: "No events to display for this category." });
-  }
+
   return arr;
 }
 
 function display(json) {
-  //console.log(json);
   var arrButtons = [];
   var buttonStyle = {
     margin: '10px 10px 10px 0'
@@ -84,26 +61,39 @@ function display(json) {
     _createClass(ButtonClicks, [{
       key: 'onClick',
       value: function onClick(i) {
-        //console.log(i);
         var data = filter(json, i);
         var arr = [];
-        for (j = 0; j < data.length; j++) {
+        if(data.length > 0){
+          for (j = 0; j < data.length; j++) {
           arr.push(React.createElement(
             'p',
-            { key: data[j].rawtitle + j },
-            data[j]["event-date"],
+            { key: data[j].gsx$rawtitle.$t + j },
+            data[j]["gsx$event-date"].$t,
             ' - ',
-            data[j].rawtitle,
+            he.decode(data[j].gsx$rawtitle.$t),
             ' '
           ));
+          }
+          draw(React.createElement(
+            'div',
+            null,
+            arr
+          ), results);
         }
-        draw(React.createElement(
-          'div',
-          null,
-          arr
-        ), results);
-        //console.log(filter(PRODUCTS, i));
-      }
+        else{
+            arr.push(React.createElement(
+              'p',
+              { key: 'empty' },
+              
+              'No events to display for this category.'
+            ));
+            }
+            draw(React.createElement(
+              'div',
+              null,
+              arr
+            ), results);
+        }
     }, {
       key: 'render',
       value: function render() {
