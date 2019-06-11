@@ -23,7 +23,6 @@ function filter(data, filterKeys) {
   if (filterKeys === "All") {
     for (i = 0; i < data.length; i++) {
       var current = data[i];
-      //console.log(current);
       arr.push(current);
     }
   }
@@ -72,7 +71,7 @@ function display(json) {
       value: function onClick(i) {
         var data = filter(json, i);
         var arr = [];
-        if(data.length > 0){console.log(data[0]);
+        if(data.length > 0){
           for (j = 0; j < data.length; j++) {
             arr.push(React.createElement('div', {key: data[j].gsx$rawtitle.$t + j,className: 'box'},
               React.createElement('div', {className: 'date'}, data[j]["gsx$event-date"].$t),
