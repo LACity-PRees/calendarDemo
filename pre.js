@@ -73,14 +73,29 @@ function display(json) {
         var arr = [];
         if(data.length > 0){
           for (j = 0; j < data.length; j++) {
-            arr.push(React.createElement('div', {key: data[j].gsx$rawtitle.$t + j,className: 'box'},
-              React.createElement('div', {className: 'date'}, data[j]["gsx$event-date"].$t),
-              React.createElement('div', {className: 'time'}, data[j].gsx$eventtime.$t),
-              React.createElement('div', {className: 'title'}, he.decode(data[j].gsx$rawtitle.$t)),
-              React.createElement('div', {className: 'address'}, data[j].gsx$street.$t),
-              React.createElement('div', {className: 'cityZip'}, data[j].gsx$city.$t + ' ' +  data[j].gsx$zipcode.$t), 
+
+            const title = data[j].gsx$rawtitle.$t;
+            const date = data[j]["gsx$event-date"].$t;
+            const startTime = data[j].gsx$eventtime.$t;
+            const street = data[j].gsx$street.$t;
+            const city = data[j].gsx$city.$t;
+            const zip = data[j].gsx$zipcode.$t;
+            const pic = data[j].gsx$eventimage.$t;
+            const link = data[j].gsx$url.$t;
+
+            if(pic === ""){
+              //default image
+              //data[j].gsx$eventimage.$t = ""
+            }
+            arr.push(React.createElement('div', {key: title + j,className: 'box'},
+              React.createElement('div', {className: 'date'}, date),
+              React.createElement('div', {className: 'time'}, startTime),
+              React.createElement('div', {className: 'title'}, he.decode(title)),
+              React.createElement('div', {className: 'address'}, street),
+              React.createElement('div', {className: 'cityZip'}, city + ' ' +  zip), 
               React.createElement('br'),
-              React.createElement('a', {className: 'calLink', href: data[j].gsx$url.$t}, 'Link')
+              React.createElement('img', {className: 'eventImg', src: pic, alt: he.decode(title) + ' picture' }),
+              React.createElement('a', {className: 'calLink', href: link}, 'Link')
             ));
             }
             draw(React.createElement(
