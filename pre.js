@@ -11,7 +11,12 @@ var url="https://spreadsheets.google.com/feeds/list/1lz79dMIx0s5ItD0ooRqHsncQcxc
 
 
 $.getJSON(url, function req(json) {
-  display(json.feed.entry.reverse());
+  try{
+    display(json.feed.entry.reverse());
+  }
+  catch{
+    location.reload();
+  }
 });
 
 
